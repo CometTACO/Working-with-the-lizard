@@ -19,7 +19,7 @@ def close_popup(driver):
         print("[LOGGING] encoutered an exception while attempting to close a popup. here is the exception:", e)
 
  
-def scrape_result_box(driver, action_chains):
+def scrape_product_links(driver, action_chains):
     try:
         driver.implicitly_wait(IMPLICIT_WAIT_TIME)
         search_result_box = driver.find_element(By.CLASS_NAME, "shopee-search-item-result__items")
@@ -28,10 +28,18 @@ def scrape_result_box(driver, action_chains):
         print("[LOGGING] found result box. attempting scraping")
         
         search_result_items_divs = search_result_box.find_elements(By.CLASS_NAME, "col-xs-2-4")
-        return search_result_items_divs
+        product_links = []
+        for div in search_result_items_divs:
+            try:
+                a_tag = div.find_element(By.TAG_NAME, "a")
+                product_link = a_tag.get_attribute("href")
+                product_links.append(product_link)
+
+            except Exception as e:
+                print("[LOGGING] exception encountered while scraping product links:", e)
+
+        return product_links
 
     except Exception as e:
         print("[LOGGING] exception encountered at scrape_page function:", e)
-
-
 
