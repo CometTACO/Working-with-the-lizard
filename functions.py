@@ -65,8 +65,13 @@ def scrape_categoryID(driver, product_link):
         div_containing_xem_shop_button = driver.find_element(By.CLASS_NAME, "Uwka-w")
         xem_shop_button = div_containing_xem_shop_button.find_element(By.TAG_NAME, "a")
         shop_link = xem_shop_button.get_attribute("href")
+
+        print("[LOGGING] found shop link:", shop_link)
+
         match = re.search("categoryId=(\d)+", shop_link)        
         categoryID = shop_link[match.start()+11:match.end()] 
+        
+        print("[LOGGING] found catID:", categoryID)
 
         return categoryID
 
